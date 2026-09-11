@@ -1,1 +1,74 @@
-Dataset
+DATASETS.txt
+
+1. ToxicChat
+Source: Hugging Face — lmsys/toxic-chat
+Configuration: toxicchat0124
+
+Access:
+from datasets import load_dataset
+dataset = load_dataset("lmsys/toxic-chat", "toxicchat0124")
+
+Usage:
+We used a balanced subset of 768 examples (384 safe, 384 toxic).
+The prompt field was used as the input text and the toxicity label was converted to the binary classification format used by the competition.
+
+--------------------------------------------------
+
+2. RealToxicityPrompts
+Source: Hugging Face — allenai/real-toxicity-prompts
+
+Access:
+from datasets import load_dataset
+dataset = load_dataset("allenai/real-toxicity-prompts")
+
+Usage:
+We created balanced training and held-out evaluation subsets from the dataset.
+The prompts were converted into binary safe/toxic examples based on their toxicity scores.
+
+--------------------------------------------------
+
+3. BeaverTails
+Source: Hugging Face — PKU-Alignment/BeaverTails
+
+Access:
+from datasets import load_dataset
+dataset = load_dataset("PKU-Alignment/BeaverTails")
+
+Usage:
+We selected a balanced subset of 200 examples (100 safe, 100 toxic).
+The dataset's safety labels were converted to the binary format required for the probe.
+
+--------------------------------------------------
+
+4. Jigsaw Toxic Comment Classification
+Source: Hugging Face — thesofakillers/jigsaw-toxic-comment-classification-challenge
+
+Access:
+from datasets import load_dataset
+dataset = load_dataset(
+    "thesofakillers/jigsaw-toxic-comment-classification-challenge"
+)
+
+Usage:
+We used the dataset's training split and selected 800 examples, consisting of 400 non-toxic and 400 toxic comments.
+Examples were randomly sampled and shuffled rather than manually balancing individual toxicity subcategories.
+
+--------------------------------------------------
+
+FINAL TRAINING DATA
+
+The four datasets were combined into a single training set containing 2,304 examples:
+
+ToxicChat:                768
+RealToxicityPrompts:      536
+BeaverTails:              200
+Jigsaw Toxic Comments:    800
+                           ----
+Total:                   2,304
+
+All selected examples were converted to the binary labels:
+
+0 = Safe / Non-toxic
+1 = Toxic
+
+The resulting prompts were passed through the required google/gemma-2-2b model. Hidden states were extracted and mean-pooled using the attention mask before training the linear probe.
