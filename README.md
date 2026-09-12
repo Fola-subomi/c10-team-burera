@@ -32,6 +32,9 @@
 ## Contributors / Team Members
 
 - Precious Akogun — Team Lead
+- Joseph James Ayemlo - co-team lead
+- Abdullahi Abdussalam Dalhat
+- Damilola Faith Ashiedu 
 
 
 ## Mentors
