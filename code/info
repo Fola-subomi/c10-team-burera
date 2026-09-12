@@ -1,1 +1,74 @@
+CODE
+Latent Probing of Toxicity Detection
 
+
+PURPOSE
+
+This folder contains information about the code used to prepare the
+data, generate model representations, train the toxicity probe,
+evaluate the probe, and prepare the competition submission.
+
+
+PIPELINE
+
+The overall pipeline is:
+
+1. Load the selected public datasets.
+2. Select and balance the required examples.
+3. Convert the original labels into binary safe/toxic labels.
+4. Load google/gemma-2-2b.
+5. Tokenize the text using the competition preprocessing settings.
+6. Extract hidden states from Gemma.
+7. Apply attention-mask-aware mean pooling.
+8. Train a logistic regression probe on the resulting representations.
+9. Evaluate the probe on held-out representations.
+10. Save the trained probe for submission.
+
+
+PROBE CONFIGURATION
+
+The final probe uses:
+
+StandardScaler
+
+LogisticRegression
+
+C = 0.001
+max_iter = 5000
+random_state = 42
+
+
+CLASSIFICATION THRESHOLD
+
+The final classifier uses a probability threshold of:
+
+0.20
+
+
+MODEL CONFIGURATION
+
+Model:
+google/gemma-2-2b
+
+Representation:
+Mean-pooled hidden states
+
+Selected layer:
+Layer 11
+
+Representation size:
+2304 dimensions
+
+
+REPRODUCIBILITY
+
+The competition submission was produced from a single notebook
+containing the complete data preparation, representation extraction,
+training, evaluation, and artifact-generation workflow.
+
+The trained probe is saved as:
+
+trained_probe.joblib
+
+The competition classifier loads this artifact and produces binary
+predictions without retraining the model during inference.
